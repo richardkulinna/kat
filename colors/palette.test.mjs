@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { contrastRatio, createPaletteStore, normalizeHex } from './palette.mjs';
+import { contrastRatio, createPaletteStore, createThemeStore, defaultTheme, makeShades, normalizeHex, setThemePalette } from './palette.mjs';
 
 assert.equal(normalizeHex(' f80 '), '#FF8800');
 assert.equal(normalizeHex('#abcd'), null);
@@ -37,3 +37,44 @@ assert.deepEqual(quota.update(colors => [...colors, '#fff']), {
   persistent: false,
 });
 assert.deepEqual(quota.read().colors, ['#000000', '#FFFFFF']);
+
+const expectedTheme = [
+  '#F8FAFB', '#0F1728', '#FB0C7F', '#0C7FFB',
+  '#7D67FC', '#04DEA6', '#FBA529', '#FC4D4D',
+];
+assert.deepEqual(defaultTheme, expectedTheme);
+
+const themeData = new Map();
+const themeStorage = {
+  getItem: key => themeData.get(key),
+  setItem: (key, value) => themeData.set(key, value),
+};
+const themeStore = createThemeStore(() => themeStorage);
+assert.deepEqual(themeStore.read().colors, expectedTheme);
+const reordered = ['#fff', '#333', '#f00', '#00f', '#a0f', '#0a0', '#f80', '#f00'];
+themeStore.update(() => reordered);
+assert.deepEqual(createThemeStore(() => themeStorage).read().colors, reordered.map(normalizeHex));
+const savedCollection = createPaletteStore(() => themeStorage);
+savedCollection.update(() => ['#abc']);
+assert.deepEqual(themeStore.read().colors, reordered.map(normalizeHex));
+assert.deepEqual(savedCollection.read().colors, ['#AABBCC']);
+themeStore.update(() => ['#aaa', '#fff']);
+assert.deepEqual(themeStore.read().colors, expectedTheme);
+assert.deepEqual(savedCollection.read().colors, ['#AABBCC']);
+
+const localTheme = createThemeStore(() => { throw new Error('Denied'); });
+assert.equal(localTheme.update(() => reordered).persistent, false);
+assert.deepEqual(localTheme.read().colors, reordered.map(normalizeHex));
+
+assert.equal(setThemePalette(reordered.slice(0, 7)), false);
+assert.equal(setThemePalette(reordered.map((hex, index) => index === 6 ? 'invalid' : hex)), false);
+assert.equal(setThemePalette(reordered), true);
+
+for (const hex of ['#000000', '#FFFFFF', ...defaultTheme]) {
+  const shades = makeShades(hex);
+  assert.equal(new Set(shades).size, 6);
+  assert.ok(shades.includes(hex));
+  assert.ok(shades.every((color, index) => index === 0
+    || contrastRatio(color, '#000000') > contrastRatio(shades[index - 1], '#000000')));
+}
+assert.deepEqual(makeShades('invalid'), []);

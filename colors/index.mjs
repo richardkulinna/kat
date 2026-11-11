@@ -40,6 +40,7 @@ await Promise.all([
   mountPicker(panels[0], import('./harmony.mjs').then(module => module.mountHarmonyPicker)),
   mountPicker(panels[1], import('./free.mjs').then(module => module.mountFreePicker)),
   mountPicker(panels[2], import('./palette.mjs').then(module => module.mountPaletteStudio)),
+  mountPicker(panels[3], import('./brand.mjs').then(module => module.mountBrandPicker)),
 ]);
 
 tabs.forEach(tab => tab.addEventListener('click', () => selectTab(tab)));

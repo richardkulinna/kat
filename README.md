@@ -4,11 +4,13 @@ KAT ist eine Werkzeugsammlung von kulinna.art für Windows und den Browser. Jede
 
 ## Colors (KAT-C)
 
-**Harmony Selector.** Der Farbkreis nach Arthur H. Keyes ordnet zwölf Pigmentfarbtöne im Abstand von je 30 Grad. Wähle eine Harmonie und drehe die Auswahl schrittweise. Gleich große Fenster zeigen nur die ausgewählten Töne in ihrer relativen Lage. Die übrigen Töne bleiben verdeckt. Eine neutrale Vergleichsansicht stellt die ausgewählten Farben direkt nebeneinander. Die HEX-Werte sind digitale sRGB-Annäherungen an die benannten Pigmentfarbtöne.
+**Harmony Selector.** Greife den Rand der Scheibe und drehe ihn mit Maus oder Finger. Der Selektor rastet auf den zwölf Positionen des historischen RYB-Kreises ein. Fünf Harmonien, gleich große Fenster und der neutrale Vergleich helfen beim Vergleichen der sRGB-Annäherungen an die Pigmentfarbtöne. In der analogen Harmonie bleibt eine Primärfarbe der Anker.
 
-**Freier Picker.** Wähle eine beliebige sRGB-Farbe oder gib ihren HEX-Wert ein. Die App zeigt HEX und RGB und ermöglicht das Kopieren.
+**Freier Picker.** Setze die Pins auf den drei HSL-Bahnen für Farbton, Sättigung und Helligkeit. Für direkte Kanalwerte wechsle zu RGB. HEX bleibt verfügbar.
 
-**Palette & Kontrast.** Sammle Farben aus beiden Pickern oder per HEX. Die Palette speichert sich im App-Profil und lässt sich als CSS-Variablen kopieren. Der Kontrastprüfer zeigt das Verhältnis von Text- und Hintergrundfarbe sowie die WCAG-AA-Grenzwerte für normale und große Schrift.
+**Palette & Kontrast.** Bearbeite Hintergrund, Schrift, zwei Primärakzente und vier Diagrammfarben. Die kulinna.art-Palette ist die Ausgangsbasis. Tonstufen, Layout-Vorschau und Textkontrast zeigen, wie die Rollen zusammenwirken. Die Palette speichert sich im App-Profil und lässt sich als CSS-Variablen kopieren.
+
+**kulinna.art-Picker.** Wähle Hintergrund, Schrift und einen ersten Akzent. Zwei Kandidaten bei +120° und −120° bieten denselben HSL-Sättigungs- und Helligkeitswert. Die Diagrammfarben liegen bei +30°, −30°, +60° und −60° mit gleicher Helligkeit und 20 Prozentpunkten weniger Sättigung. Der Mindestwert für Sättigung ist 0 %. Übergib das Ergebnis zur Vorschau an Palette & Kontrast.
 
 ## Windows
 
@@ -24,7 +26,7 @@ Die Browser-Version benötigt keinen Build. Stelle das Repository über einen st
 
 - `index.html` führt zu den Werkzeugen.
 - `styles.css` und [DESIGN.md](DESIGN.md) definieren den gemeinsamen Rahmen.
-- `colors/` enthält die Oberfläche und die beiden Picker-Module. Weitere Picker erhalten dort ein eigenes Modul. Neue Werkzeuge erhalten ein eigenes Verzeichnis und einen Eintrag im Werkzeugverzeichnis.
+- `colors/` enthält die Oberfläche und die Picker-Module. Weitere Picker erhalten dort ein eigenes Modul. Neue Werkzeuge erhalten ein eigenes Verzeichnis und einen Eintrag im Werkzeugverzeichnis.
 - `node colors/harmony.test.mjs` prüft die Keyes-Winkel und die Orientierung der Fenster.
 
 ## Quellen

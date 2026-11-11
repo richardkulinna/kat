@@ -3,14 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Farbharmonien, freier Farbwähler und Kontrastprüfung von Kulinna Artistic Tools">
+  <meta name="description" content="Farbharmonien, HSL-Farbwahl, Paletten und kulinna.art-Akzente">
   <title>Colors (KAT-C) – Kulinna Artistic Tools</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400;700&amp;display=swap">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./harmony.css">
+  <link rel="stylesheet" href="./free.css">
   <link rel="stylesheet" href="./palette.css">
+  <link rel="stylesheet" href="./brand.css">
   <script type="module" src="./index.mjs"></script>
 </head>
 <body>
@@ -30,6 +32,7 @@
         <button id="harmony-tab" type="button" role="tab" aria-selected="true" aria-controls="harmony-picker">Harmony Selector</button>
         <button id="free-tab" type="button" role="tab" aria-selected="false" aria-controls="free-picker" tabindex="-1">Freier Picker</button>
         <button id="palette-tab" type="button" role="tab" aria-selected="false" aria-controls="palette-picker" tabindex="-1">Palette &amp; Kontrast</button>
+        <button id="brand-tab" type="button" role="tab" aria-selected="false" aria-controls="brand-picker" tabindex="-1">kulinna.art-Picker</button>
       </div>
       <div class="picker-panels">
         <p id="colors-loading" role="status">Farbwerkzeug wird geladen …</p>
@@ -37,6 +40,7 @@
         <div class="picker-panel" id="harmony-picker" role="tabpanel" aria-labelledby="harmony-tab" tabindex="0" hidden></div>
         <div class="picker-panel" id="free-picker" role="tabpanel" aria-labelledby="free-tab" tabindex="0" hidden></div>
         <div class="picker-panel" id="palette-picker" role="tabpanel" aria-labelledby="palette-tab" tabindex="0" hidden></div>
+        <div class="picker-panel" id="brand-picker" role="tabpanel" aria-labelledby="brand-tab" tabindex="0" hidden></div>
       </div>
     </div>
   </main>

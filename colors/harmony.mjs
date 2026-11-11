@@ -18,24 +18,42 @@ const colors = [
 const primarySlots = [0, 4, 8];
 const allSlots = colors.map((_, index) => index);
 const clockwise = 1;
-const wrapSlot = (slot) => (slot + colors.length) % colors.length;
+const slotDegrees = 360 / colors.length;
+const wrap = (value, length) => ((value % length) + length) % length;
+const wrapSlot = (slot) => wrap(slot, colors.length);
+
+export function angularDelta(previous, next) {
+  return wrap(next - previous + 180, 360) - 180;
+}
+
+export function snapDialAngle(angle, mode) {
+  const step = slotDegrees * (mode === 'analogous' ? 4 : 1);
+  return Math.round(angle / step) * step;
+}
+
+export function pointerAngle(x, y, { left, top, width, height }) {
+  const dx = x - left - width / 2;
+  const dy = y - top - height / 2;
+  if (Math.hypot(dx, dy) < width * .1) return null;
+  return Math.atan2(dx, -dy) * 180 / Math.PI;
+}
 
 const harmonies = {
   triad: {
     label: 'Triade',
-    description: 'Drei Töne im Abstand von jeweils 120°.',
+    description: 'Drei gleichmäßig verteilte Töne.',
     offsets: [0, 4, 8],
     outerHalves: [0],
   },
   complementary: {
     label: 'Komplementär',
-    description: 'Zwei Töne stehen einander im Farbkreis gegenüber.',
+    description: 'Zwei Töne liegen einander auf der Scheibe gegenüber.',
     offsets: [0, 6],
     outerHalves: [],
   },
   near: {
     label: 'Nahkomplementär',
-    description: 'Zwei Töne. Das zweite Fenster liegt einen Schritt im Uhrzeigersinn neben dem Gegenpol.',
+    description: 'Der zweite Ton liegt einen Schritt im Uhrzeigersinn neben dem Gegenpol.',
     offsets: [0, 7],
     outerHalves: [],
   },
@@ -68,43 +86,54 @@ function drawDisc(canvas, selection, base) {
   const context = canvas.getContext('2d');
   if (!context) return;
   const center = canvas.width / 2;
-  const slotAngle = Math.PI / 6;
-  const track = center * 0.68;
-  const aperture = center * 0.145;
-  const angle = (slot) => slot * slotAngle - Math.PI / 2;
 
   context.clearRect(0, 0, canvas.width, canvas.height);
   context.save();
   context.translate(center, center);
-  context.beginPath();
-  context.arc(0, 0, center * 0.975, 0, Math.PI * 2);
-  context.fillStyle = '#D3D3D3';
-  context.fill();
-  context.lineWidth = 2;
-  context.strokeStyle = '#A4A4A4';
-  context.stroke();
+  context.scale(center, center);
 
-  for (const slot of allSlots) {
-    const inner = slot === base ? center * 0.87 : center * 0.91;
-    const outer = center * 0.935;
-    const x = Math.cos(angle(slot));
-    const y = Math.sin(angle(slot));
+  function circle(x, y, radius, fill) {
     context.beginPath();
-    context.moveTo(inner * x, inner * y);
-    context.lineTo(outer * x, outer * y);
-    context.lineWidth = slot === base ? 5 : 2;
-    context.strokeStyle = slot === base ? '#303030' : '#717171';
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fillStyle = fill;
+    context.fill();
+  }
+
+  const metal = context.createLinearGradient(-1, -1, 1, 1);
+  metal.addColorStop(0, '#F1F1F1');
+  metal.addColorStop(.38, '#C0C0C0');
+  metal.addColorStop(.67, '#D8D8D8');
+  metal.addColorStop(1, '#999');
+  circle(0, 0, .98, '#4B4B4B');
+  circle(0, 0, .966, metal);
+
+  // Cut the fine grooves into the rotating rim.
+  for (let mark = 0; mark < 120; mark++) {
+    const angle = mark * Math.PI / 60;
+    const x = Math.sin(angle);
+    const y = -Math.cos(angle);
+    const major = mark % 10 === 0;
+    const anchor = mark === 0;
+    context.beginPath();
+    context.moveTo(x * (major ? .878 : .918), y * (major ? .878 : .918));
+    context.lineTo(x * .954, y * .954);
+    context.lineWidth = anchor ? .018 : major ? .009 : .003;
+    context.strokeStyle = anchor ? '#252525' : major ? '#595959' : '#858585';
     context.stroke();
   }
 
-  for (const { slot, outer } of selection) {
-    const radialAngle = angle(slot);
-    const start = radialAngle + (outer ? -Math.PI / 2 : Math.PI / 2);
-    context.beginPath();
-    context.arc(track * Math.cos(radialAngle), track * Math.sin(radialAngle), aperture, start, start + Math.PI);
-    context.closePath();
-    context.fillStyle = colors[slot][1];
-    context.fill();
+  circle(0, 0, .86, '#858585');
+  circle(0, 0, .85, '#CBCBCB');
+  circle(0, 0, .23, '#ABABAB');
+  circle(0, 0, .22, '#D8D8D8');
+
+  for (const { slot } of selection) {
+    const angle = (slot - base) * Math.PI / 6;
+    const x = .61 * Math.sin(angle);
+    const y = -.61 * Math.cos(angle);
+    circle(x, y, .142, '#E1E1E1');
+    circle(x, y, .133, '#515151');
+    circle(x, y, .115, colors[slot][1]);
   }
 
   context.restore();
@@ -114,7 +143,14 @@ export function mountHarmonyPicker(root) {
   root.innerHTML = /* html */ `
     <div class="picker-layout">
       <figure class="picker-stage harmony-stage">
-        <canvas class="harmony-disc" width="960" height="960" aria-hidden="true"></canvas>
+        <div class="harmony-dial" role="slider" tabindex="0" aria-label="Ausgangston drehen"
+          aria-describedby="harmony-dial-guide" aria-valuemin="0">
+          <canvas class="harmony-disc" width="960" height="960" aria-hidden="true"></canvas>
+          <span class="harmony-dial-reading" data-dial-reading aria-hidden="true"></span>
+        </div>
+        <figcaption id="harmony-dial-guide">
+          Am Rand ziehen oder Pfeiltasten nutzen. <span data-step-guide></span>
+        </figcaption>
       </figure>
       <div class="picker-controls">
         <label class="field">
@@ -123,7 +159,7 @@ export function mountHarmonyPicker(root) {
             ${Object.entries(harmonies).map(([id, { label }]) => `<option value="${id}">${label}</option>`).join('')}
           </select>
         </label>
-        <p class="harmony-rule" data-rule></p>
+        <p class="harmony-rule"><span data-rule></span> <strong data-offsets></strong></p>
         <label class="field">
           <span data-base-label>Ausgangston</span>
           <select data-base></select>
@@ -150,7 +186,7 @@ export function mountHarmonyPicker(root) {
           <button type="button" data-add-palette>Harmonie zur Palette</button>
           <button type="button" data-compare>Neutral vergleichen</button>
         </div>
-        <p class="harmony-note">HEX-Werte sind digitale sRGB-Annäherungen an die benannten Pigmentfarbtöne.</p>
+        <p class="harmony-note">Inspiriert von Arthur H. Keyes’ drehbaren Scheiben mit Sichtfenstern (1941). Die Farbtöne sind digitale sRGB-Annäherungen.</p>
         <p class="harmony-note">
           <a href="https://patents.google.com/patent/US2229025A/en">Keyes-Patent</a>
           <br>
@@ -165,7 +201,11 @@ export function mountHarmonyPicker(root) {
     </dialog>
   `;
 
-  const canvas = root.querySelector('canvas');
+  const dial = root.querySelector('.harmony-dial');
+  const canvas = dial.querySelector('canvas');
+  const reading = root.querySelector('[data-dial-reading]');
+  const stepGuide = root.querySelector('[data-step-guide]');
+  const offsets = root.querySelector('[data-offsets]');
   const mode = root.querySelector('[data-mode]');
   const baseLabel = root.querySelector('[data-base-label]');
   const baseSelect = root.querySelector('[data-base]');
@@ -182,32 +222,55 @@ export function mountHarmonyPicker(root) {
   let base = 0;
   let primaryBase = 4;
   let visibleSlots = [];
+  let turn = 0;
+  let drag = null;
 
   const isAnalogous = () => mode.value === 'analogous';
   const availableBases = () => isAnalogous() ? primarySlots : allSlots;
   const activeBase = () => isAnalogous() ? primaryBase : base;
 
-  function setBase(value) {
+  function rotateTo(angle) {
+    turn = angle;
+    dial.style.setProperty('--harmony-turn', `${angle}deg`);
+  }
+
+  function setBase(value, align = true) {
     if (isAnalogous()) primaryBase = value;
     else base = value;
     baseSelect.value = String(value);
+    if (align) rotateTo(turn + angularDelta(turn, value * slotDegrees));
     render();
   }
 
   function updateMode() {
+    const step = slotDegrees * (isAnalogous() ? 4 : 1);
     baseLabel.textContent = isAnalogous() ? 'Primärfarbe' : 'Ausgangston';
     directionField.hidden = !isAnalogous();
     baseSelect.innerHTML = availableBases().map((slot) => `<option value="${slot}">${colors[slot][0]}</option>`).join('');
-    baseSelect.value = String(activeBase());
-    rule.textContent = harmonies[mode.value].description;
-    render();
+    dial.setAttribute('aria-valuemax', String(360 - step));
+    stepGuide.textContent = `Die Scheibe rastet alle ${step}° ein.`;
+    setBase(activeBase());
+  }
+
+  function turnBy(delta) {
+    const target = snapDialAngle(turn, mode.value) + delta * slotDegrees * (isAnalogous() ? 4 : 1);
+    rotateTo(target);
+    setBase(wrapSlot(target / slotDegrees), false);
   }
 
   function render() {
     const selection = harmonySlots(mode.value, activeBase(), Number(direction.value));
     visibleSlots = selection.map(({ slot }) => slot);
     drawDisc(canvas, selection, activeBase());
-    result.textContent = visibleSlots.map((slot) => colors[slot][0]).join(', ');
+    const degrees = activeBase() * slotDegrees;
+    dial.setAttribute('aria-valuenow', String(degrees));
+    dial.setAttribute('aria-valuetext', `${colors[activeBase()][0]}, ${degrees}°`);
+    reading.textContent = `${degrees}°`;
+    const { description, offsets: modeOffsets } = harmonies[mode.value];
+    rule.textContent = description;
+    const sign = isAnalogous() && Number(direction.value) < 0 ? '−' : '+';
+    offsets.textContent = modeOffsets.map((offset) => offset ? `${sign}${offset * slotDegrees}°` : '0°').join(' · ');
+    if (!drag) result.textContent = visibleSlots.map((slot) => colors[slot][0]).join(', ');
     swatches.innerHTML = visibleSlots.map((slot) => {
       const [label, hex] = colors[slot];
       return `
@@ -222,14 +285,82 @@ export function mountHarmonyPicker(root) {
     copyStatus.textContent = '';
   }
 
-  mode.addEventListener('change', updateMode);
-  baseSelect.addEventListener('change', () => setBase(Number(baseSelect.value)));
+  function trackDrag(event) {
+    if (drag?.id !== event.pointerId) return;
+    const angle = pointerAngle(event.clientX, event.clientY, dial.getBoundingClientRect());
+    if (angle !== null && drag.angle !== null) {
+      rotateTo(turn + angularDelta(drag.angle, angle));
+      const next = wrapSlot(snapDialAngle(turn, mode.value) / slotDegrees);
+      if (next !== activeBase()) setBase(next, false);
+    }
+    drag.angle = angle;
+  }
+
+  function releaseDrag() {
+    const { id } = drag;
+    drag = null;
+    dial.classList.remove('is-dragging');
+    if (dial.hasPointerCapture(id)) dial.releasePointerCapture(id);
+  }
+
+  function finishDrag(pointerId) {
+    if (drag?.id !== pointerId) return;
+    releaseDrag();
+    const target = snapDialAngle(turn, mode.value);
+    rotateTo(target);
+    setBase(wrapSlot(target / slotDegrees), false);
+  }
+
+  dial.addEventListener('pointerdown', (event) => {
+    if (drag || !event.isPrimary || event.button !== 0) return;
+    const angle = pointerAngle(event.clientX, event.clientY, dial.getBoundingClientRect());
+    if (angle === null) return;
+    const transform = getComputedStyle(canvas).transform;
+    if (transform !== 'none') {
+      // Resume from the displayed angle if the user catches the dial during settling.
+      const matrix = new DOMMatrixReadOnly(transform);
+      const displayed = Math.atan2(matrix.b, matrix.a) * 180 / Math.PI;
+      rotateTo(turn + angularDelta(turn, displayed));
+    }
+    drag = { id: event.pointerId, angle };
+    dial.classList.add('is-dragging');
+    dial.setPointerCapture(event.pointerId);
+    dial.focus({ preventScroll: true });
+  });
+  dial.addEventListener('pointermove', trackDrag);
+  dial.addEventListener('pointerup', (event) => {
+    trackDrag(event);
+    finishDrag(event.pointerId);
+  });
+  dial.addEventListener('pointercancel', (event) => finishDrag(event.pointerId));
+  dial.addEventListener('lostpointercapture', (event) => finishDrag(event.pointerId));
+
+  dial.addEventListener('keydown', (event) => {
+    const { key } = event;
+    if (!['ArrowRight', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'Home', 'End'].includes(key)) return;
+    event.preventDefault();
+    if (drag) finishDrag(drag.id);
+    if (key === 'Home' || key === 'End') {
+      const bases = availableBases();
+      setBase(key === 'Home' ? bases[0] : bases[bases.length - 1]);
+    } else {
+      turnBy(key === 'ArrowRight' || key === 'ArrowUp' ? 1 : -1);
+    }
+  });
+
+  mode.addEventListener('change', () => {
+    if (drag) releaseDrag();
+    updateMode();
+  });
+  baseSelect.addEventListener('change', () => {
+    if (drag) releaseDrag();
+    setBase(Number(baseSelect.value));
+  });
   direction.addEventListener('change', render);
   for (const button of root.querySelectorAll('[data-turn]')) {
     button.addEventListener('click', () => {
-      const bases = availableBases();
-      const index = bases.indexOf(activeBase()) + Number(button.dataset.turn);
-      setBase(bases[(index + bases.length) % bases.length]);
+      if (drag) finishDrag(drag.id);
+      turnBy(Number(button.dataset.turn));
     });
   }
 

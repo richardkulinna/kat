@@ -173,13 +173,12 @@ a:hover { text-decoration-thickness: 0.15em; }
 
 @keyframes panel-in {
   from {
-    opacity: 0;
     transform: translate(
       calc(var(--panel-x) * var(--panel-sign, 1)),
       calc(var(--panel-y) * var(--panel-sign, 1))
     );
   }
-  to { opacity: 1; transform: none; }
+  to { transform: none; }
 }
 
 .picker-layout {
@@ -190,13 +189,6 @@ a:hover { text-decoration-thickness: 0.15em; }
 }
 
 .picker-stage, .picker-controls { min-width: 0; }
-
-#free-picker .picker-stage {
-  min-block-size: 12rem;
-  aspect-ratio: 3 / 2;
-  border: 1px solid var(--control-line);
-  border-radius: var(--radius);
-}
 
 .picker-controls {
   display: grid;

@@ -1,0 +1,31 @@
+{
+  "name": "kulinna-artistic-tools",
+  "productName": "Kulinna Artistic Tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Die Werkzeugsammlung von kulinna.art",
+  "author": "Kulinna Artistic Tools",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "test": "node --test",
+    "package:win": "npm exec --yes --package=electron-builder@26.18.1 -- electron-builder --win portable --x64 --publish never"
+  },
+  "build": {
+    "appId": "art.kulinna.kat",
+    "electronVersion": "45.3.0",
+    "files": [
+      "desktop/*.cjs",
+      "index.html",
+      "styles.css",
+      "colors/**/*",
+      "assets/**/*",
+      "!**/*.test.*"
+    ],
+    "win": {
+      "executableName": "KAT"
+    },
+    "portable": {
+      "artifactName": "KAT-Windows-x64.exe"
+    }
+  }
+}

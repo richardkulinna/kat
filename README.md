@@ -1,6 +1,6 @@
 # Kulinna Artistic Tools
 
-KAT ist eine Werkzeugsammlung von kulinna.art. Die statische HTML-App verwendet gemeinsame Typografie, Farben und Navigation. Jedes Werkzeug erhält eine eigene Seite und eigene JavaScript-Module.
+KAT ist eine Werkzeugsammlung von kulinna.art für Windows und den Browser. Jedes Werkzeug hat eine eigene Seite und eigene JavaScript-Module.
 
 ## Colors (KAT-C)
 
@@ -8,13 +8,19 @@ KAT ist eine Werkzeugsammlung von kulinna.art. Die statische HTML-App verwendet 
 
 **Freier Picker.** Wähle eine beliebige sRGB-Farbe oder gib ihren HEX-Wert ein. Die App zeigt HEX und RGB und ermöglicht das Kopieren.
 
+**Palette & Kontrast.** Sammle Farben aus beiden Pickern oder per HEX. Die Palette speichert sich im App-Profil und lässt sich als CSS-Variablen kopieren. Der Kontrastprüfer zeigt das Verhältnis von Text- und Hintergrundfarbe sowie die WCAG-AA-Grenzwerte für normale und große Schrift.
+
+## Windows
+
+Öffne den letzten erfolgreichen Lauf unter [Windows x64](https://github.com/richardkulinna/kat/actions/workflows/windows.yml) und lade das Artefakt `KAT-Windows-x64` herunter. Entpacke das ZIP und starte `KAT-Windows-x64.exe`. Die portable App ist unsigniert.
+
 ## Oberfläche
 
 Markenweiß und Navy bilden den Rahmen, Pink kennzeichnet Hauptüberschriften und Blau dient der Bedienung. Montserrat und Inter folgen der kulinna.art-Designvorgabe v1.9.0. Die Arbeitsfläche ordnet Scheibe und Bedienelemente auf breiten Ansichten nebeneinander und auf schmalen Ansichten untereinander. Ausgewählte Farben und ihre Werte bleiben auch ohne Farbsehen unterscheidbar.
 
 ## App öffnen und erweitern
 
-Die App benötigt keinen Build. Stelle das Repository über einen statischen HTTP-Server bereit und öffne dessen Startseite. In einer GitHub-Entwicklungsumgebung wie Codespaces kannst du im Repository `python -m http.server 8000` starten und den weitergeleiteten Port öffnen.
+Die Browser-Version benötigt keinen Build. Stelle das Repository über einen statischen HTTP-Server bereit und öffne dessen Startseite. In einer GitHub-Entwicklungsumgebung wie Codespaces kannst du im Repository `python -m http.server 8000` starten und den weitergeleiteten Port öffnen.
 
 - `index.html` führt zu den Werkzeugen.
 - `styles.css` und [DESIGN.md](DESIGN.md) definieren den gemeinsamen Rahmen.

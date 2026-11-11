@@ -1,0 +1,185 @@
+.free-layout .free-materials { min-width: 0; }
+
+.free-editor-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.125rem;
+}
+
+.free-editor-header h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+
+.free-mode {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+}
+
+.free-mode label { display: grid; position: relative; cursor: pointer; }
+
+.free-mode input {
+  position: absolute;
+  opacity: 0;
+}
+
+.free-mode span {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  padding-inline: .7rem;
+  font-size: .875rem;
+}
+
+.free-mode label + label { border-inline-start: 1px solid var(--control-line); }
+
+.free-mode input:checked + span {
+  color: var(--brandwhite);
+  background: var(--navy);
+}
+
+.free-mode input:focus-visible + span {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.free-strips { display: grid; gap: .85rem; }
+
+.free-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .2rem .65rem;
+  padding: .6rem clamp(.6rem, 2.2vw, 1rem);
+  border: 1px solid var(--line);
+  background: #EEF1F3;
+}
+
+.free-strip-label {
+  min-width: 0;
+  font-weight: 700;
+}
+
+.free-strip-value {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  white-space: nowrap;
+}
+
+.free-strip-value > input {
+  width: 6rem;
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.free-strip input[type="range"] {
+  grid-column: 1 / -1;
+  display: block;
+  appearance: none;
+  width: 100%;
+  height: 3.15rem;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  --weave:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 10%) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgb(15 23 40 / 12%) 0 1px, transparent 1px 3px);
+  --strip-shadow: inset 0 1px 2px rgb(15 23 40 / 50%), 0 2px 2px rgb(15 23 40 / 18%);
+  --pin-shadow: inset 0 0 0 2px #FFF, 0 2px 4px rgb(15 23 40 / 48%);
+}
+
+.free-strip input::-webkit-slider-runnable-track {
+  height: 1.65rem;
+  border: 1px solid var(--control-line);
+  border-radius: 2px;
+  background: var(--weave), var(--strip-fill);
+  box-shadow: var(--strip-shadow);
+}
+
+.free-strip input::-moz-range-track {
+  height: 1.65rem;
+  border: 1px solid var(--control-line);
+  border-radius: 2px;
+  background: var(--weave), var(--strip-fill);
+  box-shadow: var(--strip-shadow);
+}
+
+.free-strip input::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.35rem;
+  height: 2.6rem;
+  margin-top: -.54rem;
+  border: 2px solid var(--navy);
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(90deg, #DCE1E6 43%, var(--navy) 43% 57%, #DCE1E6 57%);
+  box-shadow: var(--pin-shadow);
+  cursor: grab;
+}
+
+.free-strip input::-moz-range-thumb {
+  width: 1.1rem;
+  height: 2.35rem;
+  border: 2px solid var(--navy);
+  border-radius: 8px 8px 4px 4px;
+  background: linear-gradient(90deg, #DCE1E6 43%, var(--navy) 43% 57%, #DCE1E6 57%);
+  box-shadow: var(--pin-shadow);
+  cursor: grab;
+}
+
+.free-strip input:active::-webkit-slider-thumb { cursor: grabbing; }
+.free-strip input:active::-moz-range-thumb { cursor: grabbing; }
+
+.free-strip > p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: .875rem;
+}
+
+.free-card {
+  display: grid;
+  gap: .45rem;
+  margin: 0;
+  padding: .45rem .45rem .55rem;
+  border: 1px solid var(--line);
+  background: #FFF;
+  box-shadow: 0 3px 8px rgb(15 23 40 / 12%);
+}
+
+.free-chip {
+  min-height: clamp(8rem, 17vw, 12rem);
+  border: 1px solid var(--line);
+}
+
+.free-card figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 .5rem;
+  padding-inline: .25rem;
+  font-size: .875rem;
+  font-weight: 700;
+}
+
+.free-exact {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.free-exact input { min-width: 0; }
+
+@media (forced-colors: active) {
+  .free-strip input::-webkit-slider-runnable-track { background: Canvas; }
+  .free-strip input::-moz-range-track { background: Canvas; }
+  .free-strip input::-webkit-slider-thumb { background: ButtonText; }
+  .free-strip input::-moz-range-thumb { background: ButtonText; }
+  .free-mode input:checked + span { outline: 2px solid Highlight; outline-offset: -2px; }
+  .free-chip { forced-color-adjust: none; }
+}

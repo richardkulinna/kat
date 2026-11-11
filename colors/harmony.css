@@ -1,0 +1,85 @@
+.harmony-stage {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  margin: 0;
+}
+
+.harmony-disc {
+  display: block;
+  width: min(100%, 34rem);
+  height: auto;
+}
+
+.harmony-rule,
+.harmony-result,
+.harmony-note {
+  margin: 0;
+}
+
+.harmony-result {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.field[data-direction-field][hidden],
+.field[data-copy-field][hidden] {
+  display: none;
+}
+
+.harmony-note {
+  font-size: .875rem;
+}
+
+.harmony-turn > button {
+  flex: 1 1 auto;
+}
+
+.harmony-compare {
+  box-sizing: border-box;
+  width: min(48rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  padding: clamp(1rem, 4vw, 2rem);
+  border: 1px solid #717171;
+  border-radius: .75rem;
+  color: #171717;
+  background: #D3D3D3;
+}
+
+.harmony-compare::backdrop {
+  background: #767676;
+}
+
+.harmony-compare h2 {
+  margin: 0 0 1.25rem;
+  color: #171717;
+}
+
+.harmony-compare-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.5rem), 1fr));
+  gap: 1rem;
+  padding: 0;
+  margin: 0 0 1.25rem;
+  list-style: none;
+}
+
+.harmony-compare-swatches > li > span {
+  display: block;
+  height: clamp(4rem, 20vw, 9rem);
+  margin-bottom: .375rem;
+}
+
+.harmony-compare button {
+  color: #171717;
+  background: #F7F7F7;
+  border-color: #717171;
+}
+
+.harmony-compare button:focus-visible {
+  outline-color: #171717;
+}

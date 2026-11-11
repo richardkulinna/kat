@@ -150,7 +150,8 @@ export function mountHarmonyPicker(root) {
         <p class="harmony-note">HEX-Werte sind digitale sRGB-Annäherungen an die benannten Pigmentfarbtöne.</p>
         <p class="harmony-note">
           <a href="https://patents.google.com/patent/US2229025A/en">Keyes-Patent</a>
-          · <a href="https://www2.cs.arizona.edu/patterns/weaving/periodicals/ww_03_11.pdf">Anzeige in Warp &amp; Weft</a>
+          <br>
+          <a href="https://www2.cs.arizona.edu/patterns/weaving/periodicals/ww_03_11.pdf">Anzeige in Warp &amp; Weft</a>
         </p>
       </div>
     </div>
@@ -191,7 +192,7 @@ export function mountHarmonyPicker(root) {
   }
 
   function updateMode() {
-    baseLabel.textContent = isAnalogous() ? 'Primärfarbe am Ende des Verlaufs' : 'Ausgangston';
+    baseLabel.textContent = isAnalogous() ? 'Primärfarbe' : 'Ausgangston';
     directionField.hidden = !isAnalogous();
     baseSelect.innerHTML = availableBases().map((slot) => `<option value="${slot}">${colors[slot][0]}</option>`).join('');
     baseSelect.value = String(activeBase());
@@ -203,7 +204,7 @@ export function mountHarmonyPicker(root) {
     const selection = harmonySlots(mode.value, activeBase(), Number(direction.value));
     visibleSlots = selection.map(({ slot }) => slot);
     drawDisc(canvas, selection, activeBase());
-    result.textContent = visibleSlots.map((slot) => colors[slot][0]).join(' · ');
+    result.textContent = visibleSlots.map((slot) => colors[slot][0]).join(', ');
     swatches.innerHTML = visibleSlots.map((slot) => {
       const [label, hex] = colors[slot];
       return `

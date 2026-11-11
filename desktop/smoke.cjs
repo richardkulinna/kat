@@ -9,7 +9,7 @@ module.exports = async function smoke(window) {
   let ready = false;
   for (let attempt = 0; attempt < 50 && !ready; attempt += 1) {
     ready = await webContents.executeJavaScript(
-      "Boolean(document.querySelector('[role=tablist]:not([hidden])') && document.querySelectorAll('[role=tabpanel] .picker-layout').length === 4)"
+      "Boolean(document.querySelector('[role=tablist]:not([hidden])') && document.querySelector('#harmony-picker .harmony-dial') && document.querySelector('#free-picker .free-layout') && document.querySelector('#palette-picker .palette-studio') && document.querySelector('#brand-picker .brand-layout'))"
     );
     if (!ready) await delay(100);
   }
@@ -18,6 +18,7 @@ module.exports = async function smoke(window) {
     "[isSecureContext, typeof require, typeof navigator.clipboard.writeText]"
   );
   assert.deepEqual(isolation, [true, 'undefined', 'function']);
+  await delay(240);
   await rotateHarmonyDial(webContents);
   await webContents.executeJavaScript("localStorage.setItem('kat-smoke', 'works')");
   await window.loadURL('kat://app/');

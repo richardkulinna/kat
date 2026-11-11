@@ -12,6 +12,15 @@ KAT ist eine Werkzeugsammlung von kulinna.art. Die statische HTML-App verwendet 
 
 Markenweiß und Navy bilden den Rahmen, Pink kennzeichnet Hauptüberschriften und Blau dient der Bedienung. Montserrat und Inter folgen der kulinna.art-Designvorgabe v1.9.0. Die Arbeitsfläche ordnet Scheibe und Bedienelemente auf breiten Ansichten nebeneinander und auf schmalen Ansichten untereinander. Ausgewählte Farben und ihre Werte bleiben auch ohne Farbsehen unterscheidbar.
 
+## App öffnen und erweitern
+
+Die App benötigt keinen Build. Stelle das Repository über einen statischen HTTP-Server bereit und öffne dessen Startseite. In einer GitHub-Entwicklungsumgebung wie Codespaces kannst du im Repository `python -m http.server 8000` starten und den weitergeleiteten Port öffnen.
+
+- `index.html` führt zu den Werkzeugen.
+- `styles.css` und [DESIGN.md](DESIGN.md) definieren den gemeinsamen Rahmen.
+- `colors/` enthält die Oberfläche und die beiden Picker-Module. Weitere Picker erhalten dort ein eigenes Modul. Neue Werkzeuge erhalten ein eigenes Verzeichnis und einen Eintrag im Werkzeugverzeichnis.
+- `node colors/harmony.test.mjs` prüft die Keyes-Winkel und die Orientierung der Fenster.
+
 ## Quellen
 
 - [Arthur H. Keyes, Color chart, US2229025A](https://patents.google.com/patent/US2229025A/en)

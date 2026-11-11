@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Farbharmonien und freier Farbwähler von Kulinna Artistic Tools">
+  <title>Colors (KAT-C) – Kulinna Artistic Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400;700&amp;display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./harmony.css">
+  <script type="module" src="./index.mjs"></script>
+</head>
+<body>
+  <header class="site-width site-header">
+    <nav aria-label="Hauptnavigation">
+      <a href="../">Kulinna Artistic Tools</a>
+    </nav>
+  </header>
+  <main class="site-width colors">
+    <h1>Colors <span class="tool-code">(KAT-C)</span></h1>
+    <div class="mode-tabs" role="tablist" aria-label="Farbwerkzeug" hidden>
+      <button id="harmony-tab" type="button" role="tab" aria-selected="true" aria-controls="harmony-picker">Harmony Selector</button>
+      <button id="free-tab" type="button" role="tab" aria-selected="false" aria-controls="free-picker" tabindex="-1">Freier Picker</button>
+    </div>
+    <p id="colors-loading" role="status">Farbwerkzeug wird geladen …</p>
+    <noscript><p>Aktiviere JavaScript, um das Farbwerkzeug zu verwenden.</p></noscript>
+    <div class="picker-panel" id="harmony-picker" role="tabpanel" aria-labelledby="harmony-tab" tabindex="0" hidden></div>
+    <div class="picker-panel" id="free-picker" role="tabpanel" aria-labelledby="free-tab" tabindex="0" hidden></div>
+  </main>
+  <footer class="site-width site-footer">
+    <a href="https://kulinna.art">kulinna.art</a>
+  </footer>
+</body>
+</html>

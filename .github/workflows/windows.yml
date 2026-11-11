@@ -35,7 +35,7 @@ jobs:
       - name: Test packaged app startup
         shell: pwsh
         run: |
-          $process = Start-Process -FilePath (Resolve-Path 'dist/win-unpacked/KAT.exe') -ArgumentList '--smoke-test' -WindowStyle Hidden -PassThru
+          $process = Start-Process -FilePath (Resolve-Path 'dist/KAT-Windows-x64.exe') -ArgumentList '--smoke-test' -WindowStyle Hidden -PassThru
           if (-not $process.WaitForExit(60000)) {
             Stop-Process -Id $process.Id -Force
             throw 'KAT startup test timed out.'

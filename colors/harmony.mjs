@@ -1,3 +1,5 @@
+import { addPaletteColors } from './palette.mjs';
+
 const colors = [
   ['Rot', '#C73536'],
   ['Rotorange', '#D45430'],
@@ -145,6 +147,7 @@ export function mountHarmonyPicker(root) {
         </label>
         <p class="status" data-copy-status role="status"></p>
         <div class="picker-actions">
+          <button type="button" data-add-palette>Harmonie zur Palette</button>
           <button type="button" data-compare>Neutral vergleichen</button>
         </div>
         <p class="harmony-note">HEX-Werte sind digitale sRGB-Annäherungen an die benannten Pigmentfarbtöne.</p>
@@ -247,6 +250,11 @@ export function mountHarmonyPicker(root) {
       copyValue.select();
       copyStatus.textContent = 'Automatisches Kopieren fehlgeschlagen. Der HEX-Wert ist markiert.';
     }
+  });
+
+  root.querySelector('[data-add-palette]').addEventListener('click', () => {
+    copyField.hidden = true;
+    copyStatus.textContent = addPaletteColors(visibleSlots.map(slot => colors[slot][1]));
   });
 
   root.querySelector('[data-compare]').addEventListener('click', () => {

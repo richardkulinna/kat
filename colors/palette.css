@@ -1,0 +1,84 @@
+#palette-picker .palette-contrast,
+#palette-picker .palette-export {
+  display: grid;
+  gap: 1rem;
+}
+
+#palette-picker .palette-preview {
+  min-block-size: clamp(10rem, 22vw, 16rem);
+  display: grid;
+  align-content: center;
+  gap: .25rem;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--brandwhite);
+  color: var(--navy);
+}
+
+#palette-picker .palette-preview strong {
+  font: 700 1.5rem/1.2 var(--heading-font);
+}
+
+#palette-picker .palette-contrast-fields,
+#palette-picker .palette-add {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .75rem;
+}
+
+#palette-picker .palette-contrast-fields > .field {
+  flex: 1 1 8rem;
+}
+
+#palette-picker .palette-add > .field {
+  flex: 1 1 7rem;
+}
+
+#palette-picker .field > input {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+#palette-picker .palette-contrast-result {
+  padding-inline-start: .75rem;
+  border-inline-start: 3px solid var(--blue);
+}
+
+#palette-picker .palette-colors {
+  gap: 0;
+}
+
+#palette-picker .palette-colors li {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding-block: .4rem;
+  border-bottom: 1px solid var(--line);
+}
+
+#palette-picker .palette-colors button {
+  margin-inline-start: auto;
+}
+
+#palette-picker [data-empty] {
+  margin: 0;
+}
+
+#palette-picker .status:empty {
+  min-height: 0;
+  margin-block-start: -1rem;
+}
+
+#palette-picker textarea {
+  inline-size: 100%;
+  min-inline-size: 0;
+  resize: vertical;
+  padding: .6rem .75rem;
+  border: 1px solid var(--control-line);
+  border-radius: var(--radius);
+  color: inherit;
+  background: var(--brandwhite);
+  font: .875rem/1.5 ui-monospace, monospace;
+}

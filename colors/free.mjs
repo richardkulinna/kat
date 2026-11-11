@@ -1,12 +1,4 @@
-function normalizeHex(value) {
-  const digits = value.trim().replace(/^#/, "");
-  if (!/^(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(digits)) return null;
-
-  const full = digits.length === 3
-    ? [...digits].map((digit) => digit.repeat(2)).join("")
-    : digits;
-  return "#" + full.toUpperCase();
-}
+import { addPaletteColors, normalizeHex } from './palette.mjs';
 
 function toRgb(hex) {
   const channels = hex.slice(1).match(/../g).map((pair) => Number.parseInt(pair, 16));
@@ -33,6 +25,7 @@ export function mountFreePicker(root) {
         <div class="picker-actions">
           <button type="button" data-copy-hex>HEX kopieren</button>
           <button type="button" data-copy-rgb>RGB kopieren</button>
+          <button type="button" data-add-palette>Zur Palette</button>
         </div>
         <p class="status" id="free-picker-status" role="status"></p>
       </div>
@@ -45,6 +38,7 @@ export function mountFreePicker(root) {
   const rgbField = root.querySelector("[data-rgb]");
   const copyHex = root.querySelector("[data-copy-hex]");
   const copyRgb = root.querySelector("[data-copy-rgb]");
+  const addToPalette = root.querySelector("[data-add-palette]");
   const status = root.querySelector("[role=status]");
   let hex;
 
@@ -57,6 +51,7 @@ export function mountFreePicker(root) {
     hexField.removeAttribute("aria-describedby");
     copyHex.disabled = false;
     copyRgb.disabled = false;
+    addToPalette.disabled = false;
     status.textContent = "";
   }
 
@@ -70,6 +65,7 @@ export function mountFreePicker(root) {
 
     copyHex.disabled = true;
     copyRgb.disabled = true;
+    addToPalette.disabled = true;
     if (commit) {
       hexField.setAttribute("aria-invalid", "true");
       hexField.setAttribute("aria-describedby", status.id);
@@ -113,6 +109,10 @@ export function mountFreePicker(root) {
   });
   copyHex.addEventListener("click", () => copyValue(hex, hexField));
   copyRgb.addEventListener("click", () => copyValue(rgbField.value, rgbField));
+
+  addToPalette.addEventListener("click", () => {
+    status.textContent = addPaletteColors([hex]);
+  });
 
   readColorInput();
 }

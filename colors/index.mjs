@@ -12,36 +12,40 @@ function selectTab(selectedTab) {
   });
 }
 
-try {
-  const [{ mountHarmonyPicker }, { mountFreePicker }] = await Promise.all([
-    import('./harmony.mjs'),
-    import('./free.mjs'),
-  ]);
-  selectTab(tabs[0]);
-  mountHarmonyPicker(panels[0]);
-  mountFreePicker(panels[1]);
-
-  tabs.forEach(tab => tab.addEventListener('click', () => selectTab(tab)));
-  tablist.addEventListener('keydown', event => {
-    const current = tabs.indexOf(event.target);
-    if (current === -1) return;
-    const last = tabs.length - 1;
-    const next = {
-      ArrowLeft: current === 0 ? last : current - 1,
-      ArrowRight: current === last ? 0 : current + 1,
-      Home: 0,
-      End: last,
-    }[event.key];
-    if (next === undefined) return;
-    event.preventDefault();
-    selectTab(tabs[next]);
-    tabs[next].focus();
-  });
-
-  tablist.hidden = false;
-  loading.remove();
-} catch (error) {
-  panels.forEach(panel => { panel.hidden = true; });
-  loading.textContent = 'Das Farbwerkzeug konnte nicht geladen werden. Lade die Seite erneut.';
-  console.error(error);
+async function mountPicker(panel, loadMount) {
+  try {
+    const mount = await loadMount;
+    mount(panel);
+  } catch (error) {
+    const message = document.createElement('p');
+    message.textContent = 'Dieses Farbwerkzeug konnte nicht geladen werden. Lade die Seite erneut.';
+    panel.replaceChildren(message);
+    console.error(error);
+  }
 }
+
+selectTab(tabs[0]);
+await Promise.all([
+  mountPicker(panels[0], import('./harmony.mjs').then(module => module.mountHarmonyPicker)),
+  mountPicker(panels[1], import('./free.mjs').then(module => module.mountFreePicker)),
+]);
+
+tabs.forEach(tab => tab.addEventListener('click', () => selectTab(tab)));
+tablist.addEventListener('keydown', event => {
+  const current = tabs.indexOf(event.target);
+  if (current === -1) return;
+  const last = tabs.length - 1;
+  const next = {
+    ArrowLeft: current === 0 ? last : current - 1,
+    ArrowRight: current === last ? 0 : current + 1,
+    Home: 0,
+    End: last,
+  }[event.key];
+  if (next === undefined) return;
+  event.preventDefault();
+  selectTab(tabs[next]);
+  tabs[next].focus();
+});
+
+tablist.hidden = false;
+loading.remove();

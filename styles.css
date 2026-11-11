@@ -1,14 +1,18 @@
 :root {
   color-scheme: light;
   hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
   --brandwhite: #F8FAFB;
   --navy: #0F1728;
   --pink: #FB0C7F;
   --blue: #0C7FFB;
-  --line: #C6CDD7;
-  --control-line: #687486;
+  --line: rgb(15 23 40 / 22%);
+  --control-line: rgb(15 23 40 / 64%);
+  --interaction-wash: rgb(12 127 251 / 8%);
   --radius: 0.4vmin;
   --heading-font: Montserrat, system-ui, sans-serif;
+  --heading-base: clamp(0.9375rem, 2.7vw, 1.75rem);
   font: 400 100%/1.55 Inter, system-ui, sans-serif;
   color: var(--navy);
   background: var(--brandwhite);
@@ -45,11 +49,10 @@ h1, h2, h3 { margin: 0; }
 
 h1 {
   color: var(--pink);
-  font: 700 clamp(2.25rem, 7vw, 5rem)/1.06 var(--heading-font);
-  overflow-wrap: anywhere;
+  font: 700 calc(2.618 * var(--heading-base))/1.06 var(--heading-font);
 }
 
-h2 { font: 400 clamp(1.25rem, 3vw, 2rem)/1.25 var(--heading-font); }
+h2 { font: 400 calc(1.618 * var(--heading-base))/1.25 var(--heading-font); }
 h3 { font: 400 1.125rem/1.3 var(--heading-font); }
 p { margin-block: 0 0.75rem; }
 
@@ -112,7 +115,7 @@ a:hover { text-decoration-thickness: 0.15em; }
 }
 
 .mode-tabs button[aria-selected="true"] { border-bottom-color: var(--blue); font-weight: 700; }
-.mode-tabs button:hover { background: #E8F1FB; }
+.mode-tabs button:hover { background: var(--interaction-wash); }
 #colors-loading { margin-top: 1.5rem; }
 
 .picker-layout {
@@ -157,7 +160,7 @@ button, select, input:not([type="range"], [type="checkbox"], [type="radio"]) {
 
 button, select, input[type="range"] { cursor: pointer; }
 button:hover:not(:disabled, [role="tab"]) { border-color: var(--blue); }
-button:active:not(:disabled) { background: #E8F1FB; }
+button:active:not(:disabled) { background: var(--interaction-wash); }
 button:disabled { cursor: default; opacity: 0.6; }
 input[type="color"] { padding: 0.25rem; cursor: pointer; }
 
@@ -179,7 +182,6 @@ input[type="color"] { padding: 0.25rem; cursor: pointer; }
   gap: 0.65rem;
   align-items: center;
   min-width: 0;
-  overflow-wrap: anywhere;
 }
 
 .swatch-sample {
@@ -194,7 +196,6 @@ input[type="color"] { padding: 0.25rem; cursor: pointer; }
 .status {
   min-height: 1.55em;
   margin: 0;
-  overflow-wrap: anywhere;
 }
 
 dialog {

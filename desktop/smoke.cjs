@@ -9,7 +9,7 @@ module.exports = async function smoke(window) {
   let ready = false;
   for (let attempt = 0; attempt < 50 && !ready; attempt += 1) {
     ready = await webContents.executeJavaScript(
-      "Boolean(document.querySelector('[role=tablist]:not([hidden])') && document.querySelectorAll('[role=tabpanel] input').length)"
+      "Boolean(document.querySelector('[role=tablist]:not([hidden])') && document.querySelectorAll('[role=tabpanel] .picker-layout').length === 3)"
     );
     if (!ready) await delay(100);
   }
@@ -21,9 +21,9 @@ module.exports = async function smoke(window) {
   await webContents.executeJavaScript("localStorage.setItem('kat-smoke', 'works')");
   await window.loadURL('kat://app/');
   const origin = await webContents.executeJavaScript(
-    "[document.querySelector('a[href=\"./colors/\"]')?.getAttribute('href'), localStorage.getItem('kat-smoke')]"
+    "[document.querySelector('a[href=\"./colors/index.html\"]')?.getAttribute('href'), localStorage.getItem('kat-smoke')]"
   );
-  assert.deepEqual(origin, ['./colors/', 'works']);
+  assert.deepEqual(origin, ['./colors/index.html', 'works']);
   const blocked = await webContents.executeJavaScript(
     "fetch('kat://app/desktop/main.cjs').then(response => response.status)"
   );

@@ -1,5 +1,5 @@
 const { app, BrowserWindow, protocol, session, shell } = require('electron');
-const { mkdtempSync } = require('node:fs');
+const { mkdtempSync, writeFileSync } = require('node:fs');
 const { readFile } = require('node:fs/promises');
 const path = require('node:path');
 
@@ -89,7 +89,7 @@ async function createWindow() {
     height: 760,
     minWidth: 460,
     minHeight: 440,
-    backgroundColor: '#f8f8f4',
+    backgroundColor: '#F8FAFB',
     autoHideMenuBar: true,
     show: !smokeTest,
     webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false }
@@ -146,6 +146,9 @@ if (!app.requestSingleInstanceLock()) {
     return createWindow();
   }).catch(error => {
     console.error(error);
+    if (smokeTest && process.env.KAT_SMOKE_LOG) {
+      writeFileSync(process.env.KAT_SMOKE_LOG, error.stack ?? String(error));
+    }
     app.exit(1);
   });
 }

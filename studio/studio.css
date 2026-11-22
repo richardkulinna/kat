@@ -1,0 +1,25 @@
+.studio { padding-block: clamp(2rem, 5vw, 5rem); }
+.studio-work { display: grid; grid-template-columns: minmax(0, 2fr) minmax(15rem, 1fr); gap: clamp(2rem, 6vw, 6rem); }
+.studio section { min-width: 0; }
+.studio h2 { margin-bottom: 1.3rem; }
+.studio label { display: grid; gap: .35rem; font-size: .875rem; font-weight: 700; }
+.studio input, .studio select, .studio textarea { display: block; width: 100%; min-width: 0; min-height: 2.75rem; padding: .55rem .7rem; border: 1px solid var(--control-line, #586070); border-radius: var(--radius); color: var(--navy); background: var(--brandwhite); font: inherit; font-weight: 400; }
+.studio textarea { resize: vertical; }
+.studio #controls { display: grid; gap: .85rem; }
+.studio #scale { padding: 0; margin: 1.2rem 0 0; list-style: none; }
+.studio #scale li { border-top: 1px solid var(--line); padding-block: .6rem; }
+.studio #scale small, .studio #measure { font-variant-numeric: tabular-nums; font-size: .8rem; }
+.studio #scale span { display: block; white-space: pre-wrap; overflow-wrap: anywhere; }
+.studio .grid-frame { overflow: hidden; border-block: 1px solid var(--navy); background: white; }
+.studio #diagram { display: grid; height: clamp(12rem, 30vw, 24rem); }
+.studio #diagram i { background: rgba(251, 12, 127, .15); border-inline-start: 1px solid rgba(15, 23, 40, .32); }
+.studio #measure, .studio #error, .studio #feedback { margin-block: .7rem 0; }
+.studio #error { font-weight: 700; }
+.studio-export { margin-top: clamp(2rem, 5vw, 4rem); padding-top: 1.3rem; border-top: 2px solid var(--navy); }
+.studio-export p { max-width: 75ch; }
+.studio #css-output { font: .875rem/1.55 ui-monospace, monospace; }
+.studio-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .75rem; }
+.studio-actions button { min-height: 2.75rem; padding: .6rem 1.15rem; border: 1px solid var(--navy); border-radius: var(--radius); font: inherit; font-weight: 700; background: var(--brandwhite); color: var(--navy); cursor: pointer; }
+.studio-actions #copy { background: var(--navy); color: var(--brandwhite); }
+.studio-actions button:disabled { opacity: .55; cursor: default; }
+@media (max-width: 46rem) { .studio-work { grid-template-columns: minmax(0, 1fr); } }

@@ -35,7 +35,7 @@ async function run() {
       const password = page.locator('input[type=password]');
       await password.fill('wrong');
       await password.press('Enter');
-      await password.waitFor();
+      await page.getByRole('alert').waitFor();
       await password.fill('browser-fixture');
       await password.press('Enter');
       await page.waitForURL('**/studio/type.html');

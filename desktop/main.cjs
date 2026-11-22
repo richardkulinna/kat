@@ -3,7 +3,7 @@ const { mkdtempSync, writeFileSync } = require('node:fs');
 const { readFile } = require('node:fs/promises');
 const path = require('node:path');
 
-const home = 'kat://app/colors/index.html';
+const home = 'kat://app/';
 const smokeTest = process.argv.includes('--smoke-test');
 const externalHosts = new Set(['kulinna.art', 'patents.google.com', 'www2.cs.arizona.edu']);
 const contentTypes = {
@@ -106,7 +106,7 @@ async function createWindow() {
     return { action: 'deny' };
   });
 
-  await window.loadURL(home);
+  await window.loadURL(smokeTest ? home + 'colors/index.html' : home);
   if (smokeTest) {
     await require('./smoke.cjs')(window);
     app.exit(0);

@@ -1,0 +1,16 @@
+{
+  "name": "kulinna-artistic-tools",
+  "main": "web/generated/worker.mjs",
+  "compatibility_date": "2026-11-22",
+  "workers_dev": false,
+  "preview_urls": false,
+  "build": {
+    "command": "node web/build.mjs"
+  },
+  "routes": [
+    {
+      "pattern": "tools.kulinna.art",
+      "custom_domain": true
+    }
+  ]
+}

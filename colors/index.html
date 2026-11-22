@@ -27,6 +27,18 @@
       <h1>Colors</h1>
       <span class="tool-code">KAT-C</span>
     </div>
+    <details data-sensory hidden>
+      <summary>Ton &amp; Haptik</summary>
+      <fieldset aria-describedby="sensory-help">
+        <legend>Optionale Rückmeldung</legend>
+        <div class="picker-actions">
+          <label><input type="checkbox" data-sensory-sound> Leiser Rastklick</label>
+          <label><input type="checkbox" data-sensory-haptics> Kurze Vibration</label>
+        </div>
+        <p id="sensory-help">Beim Drehen der Scheibe und Verschieben der Farbstifte. Beides ist anfangs aus. Vibration hängt von Browser und Gerät ab.</p>
+        <p data-sensory-status role="status"></p>
+      </fieldset>
+    </details>
     <div class="colors-workbench">
       <div class="mode-tabs" role="tablist" aria-label="Farbwerkzeug" hidden>
         <button id="harmony-tab" type="button" role="tab" aria-selected="true" aria-controls="harmony-picker">Harmony Selector</button>

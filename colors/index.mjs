@@ -1,3 +1,5 @@
+import { mountSensoryFeedback } from './sensory.mjs';
+
 const tablist = document.querySelector('.mode-tabs');
 const tabs = [...tablist.querySelectorAll('[role="tab"]')];
 const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
@@ -63,3 +65,5 @@ tablist.addEventListener('keydown', event => {
 selectTab(tabs[0]);
 tablist.hidden = false;
 loading.remove();
+
+mountSensoryFeedback();

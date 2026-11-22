@@ -43,7 +43,7 @@ function assetPath(url) {
     const pathname = decodeURIComponent(url.pathname);
     const file = pathname.endsWith('/') ? pathname + 'index.html' : pathname;
     if (file === '/index.html' || file === '/styles.css') return file;
-    if (/^\/(?:colors|assets)\/(?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.[a-z0-9]+$/i.test(file)
+    if (/^\/(?:colors|studio|assets)\/(?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.[a-z0-9]+$/i.test(file)
         && Object.hasOwn(contentTypes, path.extname(file))) return file;
   } catch {
     // Ignore malformed percent-encoding.

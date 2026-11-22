@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rasterstudio · Kulinna Artistic Tools</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400;700&amp;display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="./studio.css">
+  <script type="module" src="../colors/shell.mjs"></script>
+  <script type="module" src="./studio.mjs"></script>
+</head>
+<body data-studio="grid">
+<header class="masthead"><div class="site-width">
+  <div class="mast-nav"><a class="site-brand" href="../index.html">Kulinna Artistic Tools</a><form data-web-logout hidden method="post" action="/logout"><button>Abmelden</button></form></div>
+  <div class="mast-title"><h1>Rasterstudio</h1></div>
+</div></header>
+<main class="site-width studio">
+  <div class="studio-work">
+    <section aria-labelledby="preview-title">
+      <h2 id="preview-title">Rastervorschau</h2>
+      <div class="grid-frame"><div id="diagram" aria-hidden="true"></div></div>
+      <p id="measure"></p>
+    </section>
+    <section aria-labelledby="settings-title">
+      <h2 id="settings-title">Einstellungen</h2>
+      <div id="controls">
+      <label>Entwurfsbreite (px)<input type="number" id="width" min="240" max="3840" value="1440" step="1" required></label>
+      <label>Spalten<input type="number" id="cols" min="1" max="32" value="12" step="1" required></label>
+      <label>Spaltenabstand (px)<input type="number" id="gap" min="0" max="256" value="24" step="1" required></label>
+      <label>Außenrand je Seite (px)<input type="number" id="margin" min="0" max="960" value="72" step="1" required></label>
+      </div>
+      <p id="error" role="status"></p>
+    </section>
+  </div>
+  <section class="studio-export" aria-labelledby="export-title">
+    <h2 id="export-title">CSS-Export</h2>
+    <p>Setze <code>.grid-frame</code> auf den äußeren Container und <code>.layout-grid</code> auf das Element mit den Rasterinhalten. Unterhalb der Entwurfsbreite skaliert das Raster proportional.</p>
+    <label for="css-output">CSS zum Übernehmen</label>
+    <textarea id="css-output" rows="7" readonly spellcheck="false"></textarea>
+    <div class="studio-actions"><button type="button" id="copy">CSS kopieren</button><button type="button" id="download">CSS herunterladen</button></div>
+    <p id="feedback" role="status"></p>
+  </section>
+</main>
+</body>
+</html>

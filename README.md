@@ -12,13 +12,17 @@ KAT ist eine Werkzeugsammlung von kulinna.art für Windows und den Browser. Jede
 
 **kulinna.art-Picker.** Wähle Hintergrund, Schrift und einen ersten Akzent. Zwei Kandidaten bei +120° und −120° bieten denselben HSL-Sättigungs- und Helligkeitswert. Die Diagrammfarben liegen bei +30°, −30°, +60° und −60° mit gleicher Helligkeit und 20 Prozentpunkten weniger Sättigung. Der Mindestwert für Sättigung ist 0 %. Übergib das Ergebnis zur Vorschau an Palette & Kontrast.
 
+## Typostudio und Rasterstudio
+
+Im Typostudio kannst du eine Schriftgrößenskala an eigenem Text ausprobieren und als CSS übernehmen. Das Rasterstudio berechnet Spaltenbreiten aus Format, Außenrand und Steg und zeigt die Aufteilung als Vorschau.
+
 ## Geschützte Web-App
 
-Öffne [tools.kulinna.art](https://tools.kulinna.art) und melde dich im Browser als `kat` an. Das gemeinsame Passwort ist als Cloudflare-Secret `KAT_PASSWORD` hinterlegt. Der Worker prüft die Anmeldung bei jeder HTML-, CSS- und JavaScript-Anfrage. Schließe für eine zeitlich begrenzte Sitzung ein privates Browserfenster nach der Nutzung. Eigene Paletten liegen im Browserprofil des jeweiligen Geräts.
+Öffne [tools.kulinna.art](https://tools.kulinna.art) und gib dein Studiopasswort ein. Das gemeinsame Passwort ist als Cloudflare-Secret `KAT_PASSWORD` hinterlegt. Der Worker prüft die Anmeldung bei jeder HTML-, CSS- und JavaScript-Anfrage. Mit „Abmelden“ beendest du die Sitzung in diesem Browser. Eigene Paletten liegen im Browserprofil des jeweiligen Geräts.
 
 ### Auf Cloudflare aktualisieren
 
-Im Repository baut `node web/build.mjs` den Worker aus den HTML-Seiten und Farbwerkzeugen. Der Build nimmt nur die Webdateien auf. Mit einem für die Zone autorisierten Cloudflare-Konto veröffentlicht `npx wrangler deploy` den Stand über die Konfiguration in `wrangler.jsonc`. Ein neues gemeinsames Passwort wird mit `npx wrangler secret put KAT_PASSWORD` gesetzt. Verwende dafür ein langes zufälliges ASCII-Passwort.
+Im Repository baut `node web/build.mjs` den Worker aus den HTML-Seiten und Studiowerkzeugen. Der Build nimmt nur die Webdateien auf. Mit einem für die Zone autorisierten Cloudflare-Konto veröffentlicht `npx wrangler deploy` den Stand über die Konfiguration in `wrangler.jsonc`. Ein neues gemeinsames Passwort wird mit `npx wrangler secret put KAT_PASSWORD` gesetzt. Verwende dafür ein langes zufälliges ASCII-Passwort.
 
 ## Windows
 

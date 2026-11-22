@@ -9,17 +9,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400;700&amp;display=swap">
   <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./colors/shell.mjs"></script>
 </head>
 <body>
-  <header class="site-width site-header">
-    <a class="site-brand" href="https://kulinna.art">kulinna.art</a>
+  <a class="skip-link" href="#workspace">Zum Inhalt</a>
+  <header class="masthead">
+    <div class="site-width">
+      <div class="mast-nav">
+        <a class="site-brand" href="https://kulinna.art">kulinna.art</a>
+        <form data-web-logout hidden method="post" action="/logout"><button type="submit">Abmelden</button></form>
+      </div>
+      <div class="mast-title"><h1>Kulinna <span>Artistic Tools</span></h1></div>
+    </div>
   </header>
-  <main class="site-width directory">
-    <h1><span>Kulinna</span> Artistic Tools</h1>
-    <nav aria-label="Werkzeuge">
+  <main class="site-width directory" id="workspace">
+    <h2 id="tools-title">Werkzeuge</h2>
+    <nav aria-labelledby="tools-title">
       <a class="tool-link" href="./colors/index.html">
-        <h2>Colors <span class="tool-code">KAT-C</span></h2>
-        <p>Farbharmonien wählen, Farben bestimmen und Kontraste prüfen.</p>
+        <span class="tool-preview" aria-hidden="true"><span class="ink-samples"><i></i><i></i><i></i></span></span>
+        <h3>Colors</h3>
+        <p>Farbharmonien finden, Paletten bearbeiten und Kontraste prüfen.</p>
+        <span class="tool-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="tool-link" href="./studio/type.html">
+        <span class="tool-preview" aria-hidden="true"><span class="type-sample">Aa</span></span>
+        <h3>Typostudio</h3>
+        <p>Schriftgrößen und Zeilenabstände im Satzbild vergleichen.</p>
+        <span class="tool-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="tool-link" href="./studio/grid.html">
+        <span class="tool-preview" aria-hidden="true"><span class="grid-sample"><i></i><i></i><i></i><i></i></span></span>
+        <h3>Rasterstudio</h3>
+        <p>Spalten, Stege und Ränder auf einer Zeichenfläche abstimmen.</p>
         <span class="tool-arrow" aria-hidden="true">→</span>
       </a>
     </nav>

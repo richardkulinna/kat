@@ -2,8 +2,13 @@ import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 
 const root = new URL("../", import.meta.url);
 const paths = ["index.html", "styles.css"];
-for (const entry of (await readdir(new URL("colors/", root), { withFileTypes: true })).sort((a,b) => a.name.localeCompare(b.name))) {
-  if (entry.isFile() && /\.(html|css|mjs)$/.test(entry.name) && !entry.name.endsWith(".test.mjs")) paths.push("colors/" + entry.name);
+for (const directory of ["colors", "studio"]) {
+  const entries = await readdir(new URL(directory + "/", root), { withFileTypes: true });
+  for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+    if (entry.isFile() && /\.(html|css|mjs)$/.test(entry.name) && !entry.name.endsWith(".test.mjs")) {
+      paths.push(directory + "/" + entry.name);
+    }
+  }
 }
 
 const files = Object.fromEntries(await Promise.all(paths.map(async path =>

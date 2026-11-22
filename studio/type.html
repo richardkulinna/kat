@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Typostudio · Kulinna Artistic Tools</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Montserrat:wght@400&amp;display=swap">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="./studio.css">
   <script type="module" src="../colors/shell.mjs"></script>
@@ -27,7 +27,7 @@
       <h2 id="settings-title">Einstellungen</h2>
       <div id="controls">
       <label>Schriftfamilie<select id="family"><option>Montserrat</option><option>Inter</option><option>Georgia</option><option>Systemschrift</option></select></label>
-      <label>Schriftschnitt<select id="weight"><option value="400">Normal · 400</option><option value="700">Fett · 700</option></select></label>
+      <label>Schriftschnitt<select id="weight"><option value="400">Normal · 400</option><option value="700">Fett</option></select></label>
       <label>Grundgröße (px)<input type="number" id="base" min="8" max="40" value="16" step="1" required></label>
       <label>Skalenfaktor<select id="ratio"><option>1.125</option><option>1.2</option><option selected>1.25</option><option>1.333</option><option>1.5</option><option>1.618</option></select></label>
       <label>Zeilenhöhe (Faktor)<input type="number" id="leading" min="1" max="2.5" value="1.35" step="0.05" required></label>
@@ -37,7 +37,7 @@
   </div>
   <section class="studio-export" aria-labelledby="export-title">
     <h2 id="export-title">CSS-Export</h2>
-    <p>Wende <code>.type-sample</code> und eine der Größenklassen auf deinen Text an. Binde die gewählte Schrift im Zielprojekt ein.</p>
+    <p>Wende <code>.type-sample</code> und eine der Größenklassen auf deinen Text an. Lege für Montserrat ExtraBold die <a href="../assets/fonts/kulinna-extrabold.woff2" download>Schriftdatei</a> neben die exportierte CSS-Datei. Binde andere Schriften im Zielprojekt ein.</p>
     <label for="css-output">CSS zum Übernehmen</label>
     <textarea id="css-output" rows="7" readonly spellcheck="false"></textarea>
     <div class="studio-actions"><button type="button" id="copy">CSS kopieren</button><button type="button" id="download">CSS herunterladen</button></div>

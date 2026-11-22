@@ -25,13 +25,31 @@ async function run() {
   try {
     browser = await chromium.launch({ executablePath: process.env.CHROME_BIN, headless: true });
     const origin = 'http://127.0.0.1:' + server.address().port;
-    for (const width of [390, 1366]) {
+    for (const width of [320, 390, 1366]) {
       const context = await browser.newContext({ viewport: { width, height: 840 } });
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       await page.route('https://fonts.**/*', route => route.abort());
+      async function checkBoldMontserrat(heading) {
+        const [loaded, tracking, kerning] = await heading.evaluate(async element => {
+          const css = getComputedStyle(element);
+          const faces = await document.fonts.load('800 32px Montserrat', element.textContent);
+          return [faces.some(face => face.status === 'loaded' && ['700 900', '800'].includes(face.weight)),
+            parseFloat(css.letterSpacing) / parseFloat(css.fontSize), css.fontKerning];
+        });
+        assert(loaded, 'Self-hosted ExtraBold loaded');
+        assert(Math.abs(tracking - .005) < .0001, 'Montserrat tracking is +.005em');
+        assert.equal(kerning, 'normal');
+      }
       await page.goto(origin + '/studio/type.html');
+      await checkBoldMontserrat(page.locator('h1'));
+      const fontResponse = await context.request.get(origin + '/assets/fonts/kulinna-extrabold.woff2');
+      assert.equal(fontResponse.status(), 200);
+      assert.equal(fontResponse.headers()['content-type'], 'font/woff2');
+      assert.equal((await fontResponse.body()).subarray(0,4).toString(), 'wOF2');
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, 'login fits ' + width);
+
       const password = page.locator('input[type=password]');
       await password.fill('wrong');
       await password.press('Enter');
@@ -43,8 +61,15 @@ async function run() {
         const response = await page.goto(origin + path);
         assert.equal(response.status(), 200);
         await page.locator('main').waitFor();
+        await checkBoldMontserrat(page.locator('h1'));
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, width + 'px ' + path);
       }
+      await page.goto(origin + '/studio/type.html');
+      await page.locator('#weight').selectOption('700');
+      await checkBoldMontserrat(page.locator('#scale li span').first());
+      assert.match(await page.locator('#css-output').inputValue(), /kulinna-extrabold[.]woff2/);
+      await page.locator('#family').selectOption('Inter');
+      assert.doesNotMatch(await page.locator('#css-output').inputValue(), /kulinna-extrabold[.]woff2/);
       await page.goto(origin + '/');
       await page.locator('form[action="/logout"] button').click();
       await password.waitFor();

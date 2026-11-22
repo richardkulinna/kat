@@ -78,7 +78,9 @@
 .harmony-dial-reading {
   position: absolute;
   color: #252525;
-  font: 700 clamp(.8rem, 3vw, 1.6rem) / 1 Montserrat, sans-serif;
+  font: 800 clamp(.8rem, 3vw, 1.6rem) / 1 var(--heading-font);
+  letter-spacing: var(--montserrat-tracking);
+  font-kerning: normal;
   font-variant-numeric: tabular-nums;
   pointer-events: none;
 }

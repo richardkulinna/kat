@@ -69,6 +69,9 @@
 
 #palette-picker .palette-role-label strong {
   font-family: var(--heading-font);
+  font-weight: 800;
+  letter-spacing: var(--montserrat-tracking);
+  font-kerning: normal;
 }
 
 #palette-picker .palette-editor {
@@ -176,8 +179,9 @@
 }
 
 #palette-picker .palette-proof header h3 {
-  font: 700 clamp(2.25rem, 5vw, 4.5rem)/.96 var(--heading-font);
-  letter-spacing: -.055em;
+  font: 800 clamp(2.25rem, 5vw, 4.5rem)/.96 var(--heading-font);
+  letter-spacing: var(--montserrat-tracking);
+  font-kerning: normal;
 }
 
 #palette-picker .palette-proof-lede {
@@ -237,8 +241,9 @@
 
 #palette-picker .palette-contrast-score {
   margin: .45rem 0 .2rem;
-  font: 700 clamp(1.8rem, 4vw, 3rem)/1.15 var(--heading-font);
-  letter-spacing: -.04em;
+  font: 800 clamp(1.8rem, 4vw, 3rem)/1.15 var(--heading-font);
+  letter-spacing: var(--montserrat-tracking);
+  font-kerning: normal;
 }
 
 #palette-picker .palette-contrast-main {

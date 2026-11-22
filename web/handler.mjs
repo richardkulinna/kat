@@ -1,9 +1,11 @@
 const types = {
   html: "text/html; charset=utf-8",
   css: "text/css; charset=utf-8",
-  mjs: "text/javascript; charset=utf-8"
+  mjs: "text/javascript; charset=utf-8",
+  woff2: "font/woff2"
 };
 
+const brandFont = "/assets/fonts/kulinna-extrabold.woff2";
 const cookieName = "__Host-kat-session";
 const lifetime = 60 * 60 * 12;
 const cookieFlags = "; Path=/; Secure; HttpOnly; SameSite=Strict";
@@ -51,22 +53,30 @@ function loginPage(next, error) {
   return `<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Anmelden · Kulinna Artistic Tools</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@700;800;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap">
 <style>
+@font-face {
+  font-family: Montserrat;
+  src: url("${brandFont}") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  font-feature-settings: "kern" 1, "liga" 0, "clig" 0;
+}
 *{box-sizing:border-box}html{font-family:Inter,Arial,sans-serif;color:#0F1728;background:#F8FAFB}
 body{margin:0;min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
 header,footer{padding:1.1rem clamp(1.2rem,6vw,6rem);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-header{color:#F8FAFB;background:#0F1728}header b{font:900 1.55rem Montserrat,Arial,sans-serif;letter-spacing:-.08em}
+header{color:#F8FAFB;background:#0F1728}header b{font:800 1.55rem Montserrat,Arial,sans-serif;letter-spacing:.005em;font-kerning:normal}
 header b::after{content:"";display:inline-block;width:.33em;height:.33em;background:#FB0C7F;margin-left:.15em}
 header span,footer{font-size:.85rem}main{width:min(90%,74rem);margin:auto;padding:clamp(3rem,10vh,8rem) 0;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(15rem,.8fr);align-items:center;gap:clamp(2rem,8vw,8rem)}
-h1,h2{font-family:Montserrat,Arial,sans-serif}h1{font-size:clamp(3.3rem,7.8vw,7.7rem);font-weight:900;letter-spacing:-.075em;line-height:.95;margin:0}
-h1 span{display:block;color:#FB0C7F}h2{font-size:clamp(1.6rem,3vw,2.3rem);margin:0 0 1.8rem;letter-spacing:-.055em}
+h1,h2{font-family:Montserrat,Arial,sans-serif}h1{font-size:clamp(3.3rem,7.8vw,7.7rem);font-weight:800;letter-spacing:.005em;font-kerning:normal;font-variant-ligatures:no-common-ligatures;line-height:.95;margin:0}
+h1 span{display:block;color:#FB0C7F}h2{font-size:clamp(1.6rem,3vw,2.3rem);margin:0 0 1.8rem;font-weight:800;letter-spacing:.005em;font-kerning:normal}
 form{border-top:3px solid #0F1728;padding-top:1.6rem}label{font-weight:600}input,button{width:100%;font:inherit;border-radius:0;min-height:3.2rem}
 input{margin:.6rem 0 1rem;padding:.7rem;border:1px solid #0F1728;background:#F8FAFB;color:#0F1728}
 button{border:0;background:#0F1728;color:#F8FAFB;font-weight:700;cursor:pointer;text-align:left;padding:.8rem 1rem}
 button::after{content:"→";float:right}button:hover{box-shadow:inset 0 -4px #0C7FFB}:focus-visible{outline:3px solid #0C7FFB;outline-offset:3px}
 [role=alert]{border-left:3px solid #FB0C7F;padding-left:.7rem;line-height:1.5}footer{border-top:1px solid #0F1728}
-@media(max-width:44rem){main{grid-template-columns:1fr;gap:3rem;width:calc(100% - 2.4rem)}h1{font-size:clamp(3.1rem,11vw,5rem)}}
+@media(max-width:44rem){main{grid-template-columns:1fr;gap:3rem;width:calc(100% - 2.4rem)}h1{font-size:clamp(2.5rem,11vw,5rem)}}
 </style></head><body><header><b>KAT</b><span>Geschützter Bereich</span></header>
 <main><h1>Kulinna<span>Artistic</span>Tools</h1><form method="post" action="/login">
 <h2>Studio öffnen</h2><input type="hidden" name="next" value="${target}"><label for="password">Passwort</label>
@@ -131,6 +141,12 @@ export async function serve(request, env, files) {
     if (!(await passwordMatches(data.get("password") || "", env.KAT_PASSWORD))) return form(next, true);
     headers.set("Set-Cookie", cookieName + "=" + await makeSession(env.KAT_PASSWORD) + "; Max-Age=" + lifetime + cookieFlags);
     return redirect(next);
+  }
+  if (url.pathname === brandFont && Object.hasOwn(files, brandFont)) {
+    headers.set("Content-Type", types.woff2);
+    headers.set("Cache-Control", "public, max-age=86400");
+    headers.delete("Vary");
+    return reply(200, Uint8Array.from(atob(files[brandFont]), byte => byte.charCodeAt(0)));
   }
   const authenticated = await hasSession(request, env.KAT_PASSWORD);
   if (login) {

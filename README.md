@@ -30,7 +30,7 @@ Im Repository baut `node web/build.mjs` den Worker aus den HTML-Seiten und Studi
 
 ## Oberfläche
 
-Markenweiß und Navy bilden den Rahmen, Pink kennzeichnet Hauptüberschriften und Blau dient der Bedienung. Montserrat und Inter folgen der kulinna.art-Designvorgabe v1.9.0. Die Arbeitsfläche ordnet Scheibe und Bedienelemente auf breiten Ansichten nebeneinander und auf schmalen Ansichten untereinander. Ausgewählte Farben und ihre Werte bleiben auch ohne Farbsehen unterscheidbar.
+Markenweiß und Navy bilden den Rahmen, Pink kennzeichnet Hauptüberschriften und Blau dient der Bedienung. Montserrat ExtraBold folgt der [Kerning-Matrix von kulinna.art](https://app.notion.com/p/4202804dbc69811cb073f3cb52805019) mit 3.600 Paaren und +0,005 em Grundlaufweite. Die Arbeitsfläche ordnet Scheibe und Bedienelemente auf breiten Ansichten nebeneinander und auf schmalen Ansichten untereinander. Ausgewählte Farben und ihre Werte bleiben auch ohne Farbsehen unterscheidbar.
 
 ## App öffnen und erweitern
 

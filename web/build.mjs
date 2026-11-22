@@ -14,6 +14,8 @@ for (const directory of ["colors", "studio"]) {
 const files = Object.fromEntries(await Promise.all(paths.map(async path =>
   ["/" + path, await readFile(new URL(path, root), "utf8")]
 )));
+const fontPath = "assets/fonts/kulinna-extrabold.woff2";
+files["/" + fontPath] = await readFile(new URL(fontPath, root), "base64");
 const handler = await readFile(new URL("./handler.mjs", import.meta.url), "utf8");
 await mkdir(new URL("./generated/", import.meta.url), { recursive: true });
 await writeFile(new URL("./generated/worker.mjs", import.meta.url),

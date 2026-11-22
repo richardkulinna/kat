@@ -15,7 +15,9 @@ const format = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 2 });
 function showType() {
   const sizes = scaleSizes(number('base'), Number(byId('ratio').value));
   const family = fonts[byId('family').value];
-  const weight = byId('weight').value;
+  const boldMontserrat = byId('family').value === 'Montserrat' && byId('weight').value === '700';
+  const weight = boldMontserrat ? '800' : byId('weight').value;
+  const tracking = boldMontserrat ? '0.005em' : 'normal';
   const leading = number('leading');
   const list = byId('scale');
   list.replaceChildren(...sizes.map((size, index) => {
@@ -24,11 +26,17 @@ function showType() {
     label.textContent = steps[index] + ' · ' + format.format(size) + ' px';
     const sample = document.createElement('span');
     sample.textContent = byId('sample').value;
-    Object.assign(sample.style, { fontFamily: family, fontWeight: weight, fontSize: size + 'px', lineHeight: leading });
+    Object.assign(sample.style, { fontFamily: family, fontWeight: weight, fontSize: size + 'px', lineHeight: leading, letterSpacing: tracking });
+    if (boldMontserrat) {
+      sample.style.fontKerning = 'normal';
+      sample.style.fontVariantLigatures = 'no-common-ligatures';
+    }
     row.append(label, sample);
     return row;
   }).reverse());
-  return '.type-sample {\n  font-family: ' + family + ';\n  font-weight: ' + weight + ';\n  line-height: ' + leading + ';\n}\n\n' +
+  const face = boldMontserrat ? "@font-face {\n  font-family: Montserrat;\n  src: url(\"kulinna-extrabold.woff2\") format(\"woff2\");\n  font-style: normal;\n  font-weight: 800;\n  font-display: swap;\n  font-feature-settings: \"kern\" 1, \"liga\" 0, \"clig\" 0;\n}\n\n" : '';
+  const spacing = boldMontserrat ? '\n  letter-spacing: ' + tracking + ';\n  font-kerning: normal;\n  font-variant-ligatures: no-common-ligatures;' : '';
+  return face + '.type-sample {\n  font-family: ' + family + ';\n  font-weight: ' + weight + ';\n  line-height: ' + leading + ';' + spacing + '\n}\n\n' +
     sizes.map((size, i) => '.type-' + steps[i] + ' { font-size: ' + size + 'px; }').join('\n');
 }
 
